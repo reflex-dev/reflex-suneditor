@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "reflex-suneditor"
+version = "0.0.11"
+description = "Reflex suneditor"
+authors = ["Akshay Awate <akshayawate2012@gmail.com>"]
+readme = "README.md"
+packages = [{include = "reflex_suneditor"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+reflex = "0.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
