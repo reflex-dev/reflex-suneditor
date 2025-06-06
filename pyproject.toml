@@ -5,9 +5,7 @@ description = "Reflex suneditor"
 authors = [{ name = "Akshay Awate", email = "akshayawate2012@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
-
-[tool.poetry.dependencies]
-reflex = "0.7.14"
+dependencies = ["reflex >=0.7.14"]
 
 [dependency-groups]
 dev = ["ruff", "pyright"]
@@ -20,6 +18,7 @@ lint.pydocstyle.convention = "google"
 lint.select = ["ALL"]
 lint.ignore = ["COM", "PLC0414", "RUF012", "TC002"]
 
+[tool.pyright]
 
 [build-system]
 requires = ["hatchling"]
