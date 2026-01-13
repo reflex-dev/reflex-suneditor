@@ -1,6 +1,6 @@
 [project]
 name = "reflex-suneditor"
-version = "0.1.0"
+version = "0.1.0.post1"
 description = "Reflex suneditor"
 authors = [{ name = "Akshay Awate", email = "akshayawate2012@gmail.com" }]
 readme = "README.md"
