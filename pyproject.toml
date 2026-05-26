@@ -5,7 +5,9 @@ description = "Reflex suneditor"
 authors = [{ name = "Akshay Awate", email = "akshayawate2012@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["reflex >=0.7.14"]
+dependencies = [
+    "reflex>=0.9.0,<1.0",
+]
 
 [dependency-groups]
 dev = ["ruff", "pyright"]

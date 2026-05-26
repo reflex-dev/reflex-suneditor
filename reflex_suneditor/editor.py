@@ -5,12 +5,15 @@ from __future__ import annotations
 import enum
 from typing import Literal
 
-from reflex.base import Base
+from reflex import PropsBase
 from reflex.components.component import Component, NoSSRComponent
 from reflex.event import EventHandler, no_args_event_spec, passthrough_event_spec
-from reflex.utils.format import to_camel_case
 from reflex.utils.imports import ImportDict, ImportVar
 from reflex.vars.base import Var
+
+# suneditor-react@3.6.1 peer-dep is suneditor@^2.44. Without pinning, npm may
+# resolve suneditor@3.x and break module loading at runtime.
+_SUNEDITOR_NPM = "suneditor@2.47.10"
 
 
 class EditorButtonList(list, enum.Enum):
@@ -46,7 +49,7 @@ class EditorButtonList(list, enum.Enum):
     ]
 
 
-class EditorOptions(Base):
+class EditorOptions(PropsBase):
     """Some of the additional options to configure the Editor.
 
     Complete list of options found here:
@@ -66,7 +69,7 @@ class EditorOptions(Base):
     rtl: bool | None = None
 
     # List of buttons to use in the toolbar.
-    button_list: list[list[str] | str] | None
+    button_list: list[list[str] | str] | None = None
 
 
 def on_blur_spec(_e: Var, content: Var[str]) -> tuple[Var[str]]:
@@ -111,7 +114,7 @@ class Editor(NoSSRComponent):
 
     is_default = True
 
-    lib_dependencies: list[str] = ["suneditor"]
+    lib_dependencies: list[str] = [_SUNEDITOR_NPM]
 
     # Language of the editor.
     # Alternatively to a string, a dict of your language can be passed to this prop.
@@ -234,13 +237,18 @@ class Editor(NoSSRComponent):
     toggle_full_screen: EventHandler[passthrough_event_spec(bool)]
 
     def add_imports(self) -> ImportDict:
-        """Add imports for the Editor component.
+        """Add CSS for suneditor 2.x (matches lib_dependencies version).
 
         Returns:
             The import dict.
         """
         return {
-            "": ImportVar(tag="suneditor/dist/css/suneditor.min.css", install=False)
+            "": [
+                ImportVar(
+                    tag="suneditor/dist/css/suneditor.min.css",
+                    install=False,
+                ),
+            ],
         }
 
     @classmethod
@@ -263,9 +271,8 @@ class Editor(NoSSRComponent):
             if isinstance(set_options, Var):
                 msg = "EditorOptions cannot be a state Var"
                 raise ValueError(msg)
-            props["set_options"] = {
-                to_camel_case(k): v
-                for k, v in set_options.dict().items()
-                if v is not None
-            }
+            props["set_options"] = set_options.dict()
         return super().create(*[], **props)
+
+
+editor = Editor.create
